@@ -1,17 +1,21 @@
 function initializeInterpolationCalculator() {
     document.getElementById('runInterpolationBtn').addEventListener('click', handleRunInterpolation);
 
+    const interpolationMethod = document.getElementById('interpolationMethod');
     const modePoints = document.getElementById('modePoints');
     const modeFunction = document.getElementById('modeFunction');
 
-    function toggleMode() {
+    function toggleInputs() {
         const useFunction = modeFunction.checked;
+
         document.getElementById('pointsInputBlock').style.display = useFunction ? 'none' : '';
         document.getElementById('functionInputBlock').style.display = useFunction ? '' : 'none';
     }
 
-    modePoints.addEventListener('change', toggleMode);
-    modeFunction.addEventListener('change', toggleMode);
+    modePoints.addEventListener('change', toggleInputs);
+    modeFunction.addEventListener('change', toggleInputs);
+    interpolationMethod.addEventListener('change', toggleInputs);
+    toggleInputs();
 }
 
 function handleRunInterpolation() {
@@ -48,6 +52,9 @@ function handleRunInterpolation() {
         } else if (method === 'newton') {
             resultObj = buildNewtonPolynomial(points);
             extraResult.value = `Coefficients: ${resultObj.coefficients.map((c) => c.toString()).join(', ')}`;
+        } else if (method === 'neville') {
+            resultObj = buildNevillePolynomial(points);
+            extraResult.value = `Neville interpolation of degree ${resultObj.degree}`;
         }
 
         polynomialResult.value = resultObj.expression || (method + ' (see extra info)');
@@ -158,4 +165,31 @@ function buildNewtonPolynomial(points) {
 function formatLagrangeFactor(xValue) {
     if (math.equal(xValue, 0)) return '(x)';
     return math.larger(xValue, 0) ? `(x - ${xValue.toString()})` : `(x + ${math.abs(xValue).toString()})`;
+}
+
+function buildNevillePolynomial(points) {
+    const n = points.length;
+    const exprTable = Array.from({ length: n }, () => Array(n).fill(''));
+
+    for (let i = 0; i < n; i++) {
+        exprTable[i][0] = `(${points[i].y.toString()})`;
+    }
+
+    for (let j = 1; j < n; j++) {
+        for (let i = 0; i < n - j; i++) {
+            const x_i = points[i].x;
+            const x_ij = points[i + j].x;
+            const denom = math.subtract(x_i, x_ij);
+            exprTable[i][j] = `((x - ${x_ij.toString()}) * (${exprTable[i][j - 1]}) - (x - ${x_i.toString()}) * (${exprTable[i + 1][j - 1]})) / (${denom.toString()})`;
+        }
+    }
+
+    const expression = math.simplify(exprTable[0][n - 1]).toString();
+    const compiled = math.compile(expression);
+
+    return {
+        expression,
+        degree: n - 1,
+        evaluate: (xValue) => compiled.evaluate({ x: math.bignumber(xValue) })
+    };
 }
