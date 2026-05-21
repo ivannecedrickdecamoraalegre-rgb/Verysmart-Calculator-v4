@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Very Smart Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <img id='logo' src="img/verysmart-calc-flat.svg" alt="VerySmart™ Calc logo">
+    </header>
+
+    <div id="wrapper">
+        <section id="computationSection">
+            <h2>Computation</h2>
+            <div class="subsection">
+                <fieldset>
+                    <legend>Expression / polynomial</legend>
+                    <label for="polynomialFunction">Enter expression (for x, use x):</label><br />
+                    <input id='polynomialFunction' type="text" placeholder="e.g., 2 + 3 or x^2 + 1">
+                    <div class="input-row">
+                        <label for="polynomialVariable">Value of x:</label>
+                        <input id="polynomialVariable" type="number" placeholder="optional">
+                    </div>
+                    <button id="computeBtn" type="button">Compute</button>
+                </fieldset>
+            </div>
+
+            <div class="subsection">
+                <fieldset>
+                    <legend>K-digit arithmetic</legend>
+                    <label for="kDigitMethod">Method:</label><br>
+                    <input id="kChop" value="chop" name="kMethod" type="radio" checked>
+                    <label for="kChop">Chop</label>
+                    <input id="kRound" value="round" name="kMethod" type="radio">
+                    <label for="kRound">Round</label>
+                    <br>
+                    <label for="kDigits">K (significant digits):</label><br>
+                    <input id="kDigits" type="number" placeholder="2"><br>
+                    <button id="evaluateKDigitBtn" type="button">Evaluate K-digit</button>
+                </fieldset>
+            </div>
+
+            <section id="section2">
+                <fieldset id='cedrick'>
+                    <legend>Chop or round result:</legend>
+                    <input id='chop' value='chop' name='method' type="radio" checked>
+                    <label for="chop">Chop</label>
+                    <input id='round' value="round" name="method" type="radio">
+                    <label for="round">Round</label>
+                </fieldset>
+                <fieldset>
+                    <label for="significantDigits">Number of significant digits:</label>
+                    <input id='significantDigits' type="number" placeholder="2">
+                </fieldset>
+            </section>
+            <button id="applyChopRoundBtn" type="button">Apply Chop/Round</button>
+
+            <div id="resultContainer" class="result-section">
+                <h2>Computed Result</h2>
+                <div class="result-row"><label>Result:</label> <input id="result" type="text" title="Computed result" readonly></div>
+                <div class="result-row"><label>K-digit Result:</label> <input id="kDigitResult" type="text" title="K-digit arithmetic result" readonly></div>
+                <div class="result-row"><label>Absolute Error:</label> <input id="absoluteErrorResult" type="text" title="Absolute error" readonly></div>
+                <div class="result-row"><label>Relative Error:</label> <input id="relativeErrorResult" type="text" title="Relative error" readonly></div>
+                <div class="result-row"><label>Maximum Absolute Error:</label> <input id="maximumErrorResult" type="text" title="Maximum absolute error" readonly></div>
+                <div class="result-row"><label>Significant Digits:</label> <input id="significantDigitsResult" type="text" title="Significant digits used" readonly></div>
+            </div>
+        </section>
+        <section id="section4">
+            <h2>Error Evaluation from P and P*</h2>
+            <fieldset>
+                <div class="subsection">
+                    <label for="pValue">Enter true value P:</label> <br />
+                    <input id="pValue" type="number" placeholder="P">
+                </div>
+                <div class="subsection">
+                    <label for="pStarValue">Enter approximate value P*:</label> <br />
+                    <input id="pStarValue" type="number" placeholder="P*">
+                </div>
+                <div class="subsection">
+                    <label for="extraSignificantDigits">Number of significant digits:</label> <br />
+                    <input id="extraSignificantDigits" type="number" placeholder="2">
+                </div>
+            </fieldset>
+            <button id="extraBtn" type="button">Evaluate Errors</button>
+            <div id="extraResultContainer" class="result-section">
+                <div class="result-row"><label>P*:</label> <input id="extraPStar" type="text" title="Approximate value P*" readonly></div>
+                <div class="result-row"><label>Absolute Error:</label> <input id="extraAbsoluteError" type="text" title="Absolute error" readonly></div>
+                <div class="result-row"><label>Relative Error:</label> <input id="extraRelativeError" type="text" title="Relative error" readonly></div>
+                <div class="result-row"><label>Maximum Absolute Error:</label> <input id="extraMaximumError" type="text" title="Maximum absolute error" readonly></div>
+                <div class="result-row"><label>Significant Digits:</label> <input id="extraSignificantDigitsResult" type="text" title="Significant digits used" readonly></div>
+            </div>
+        </section>
+        <section id="section5">
+            <h2>Binary Conversion</h2>
+            <fieldset>
+                <div class="subsection">
+                    <label for="decimalInput">Enter decimal number:</label> <br />
+                    <input id="decimalInput" type="number" placeholder="Decimal">
+                </div>
+                <div class="subsection">
+                    <label for="binaryInput">Enter binary number:</label> <br />
+                    <input id="binaryInput" type="text" placeholder="Binary">
+                </div>
+                <div class="subsection">
+                    <label>Interpret binary as:</label><br>
+                    <input id="binPlain" name="binMode" type="radio" value="plain" checked>
+                    <label for="binPlain">Plain binary (int/frac)</label><br>
+                    <input id="binIEEE32" name="binMode" type="radio" value="ieee32">
+                    <label for="binIEEE32">IEEE 754 (32-bit float)</label><br>
+                    <input id="binIEEE64" name="binMode" type="radio" value="ieee64">
+                    <label for="binIEEE64">IEEE 754 (64-bit double)</label>
+                </div>
+            </fieldset>
+            <button id="decToBinBtn" type="button">Decimal to Binary</button>
+            <button id="binToDecBtn" type="button">Binary to Decimal</button>
+            <div id="binaryResultContainer" class="result-section">
+                <div class="result-row"><label>Decimal Result:</label> <input id="binaryDecimalResult" type="text" title="Decimal result" readonly></div>
+                <div class="result-row"><label>Binary Result:</label> <input id="binaryBinaryResult" type="text" title="Binary result" readonly></div>
+                <div class="result-row"><label>IEEE Interpretation:</label> <input id="binaryIEEEResult" type="text" title="IEEE 754 interpretation" readonly></div>
+            </div>
+        </section>
+        <section id="rootFindingSection">
+            <h2>Root Finding Methods</h2>
+            <fieldset>
+                <legend>Function</legend>
+                <label for="rootFunction">Enter f(x):</label><br>
+                <input id="rootFunction" type="text" placeholder="e.g., x^3 - x - 2">
+                <div class="input-row">
+                    <label for="rootSigDigits">Significant digits:</label>
+                    <input id="rootSigDigits" type="number" placeholder="10" value="10">
+                </div>
+                <div class="subsection">
+                    <label>Arithmetic:</label><br>
+                    <input id="rootRound" value="round" name="rootMethod" type="radio" checked>
+                    <label for="rootRound">Round</label>
+                    <input id="rootChop" value="chop" name="rootMethod" type="radio">
+                    <label for="rootChop">Chop</label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Bisection Method</legend>
+                <div class="method-grid">
+                    <label for="bisectionA">a</label>
+                    <input id="bisectionA" type="number" step="any" placeholder="1">
+                    <label for="bisectionB">b</label>
+                    <input id="bisectionB" type="number" step="any" placeholder="2">
+                    <label for="bisectionErrorConstraint">Error constraint</label>
+                    <input id="bisectionErrorConstraint" type="number" step="any" placeholder="0.0001" value="0.0001">
+                    <label for="bisectionTolerance">Tolerance</label>
+                    <input id="bisectionTolerance" type="number" step="any" placeholder="0.0001" value="0.0001">
+                </div>
+                <button id="runBisectionBtn" type="button">Run Bisection</button>
+                <div class="result-row"><label>Root:</label> <input id="bisectionRoot" type="text" title="Bisection root" readonly></div>
+                <div class="result-row"><label>Steps:</label> <input id="bisectionSteps" type="text" title="Bisection steps" readonly></div>
+                <div class="result-row"><label>Error Bound:</label> <input id="bisectionErrorBound" type="text" title="Relative bisection error bound" readonly></div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>i</th>
+                                <th>a</th>
+                                <th>b</th>
+                                <th>mid</th>
+                                <th>f(mid)</th>
+                                <th>|b-a|/|a|</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bisectionTable"></tbody>
+                    </table>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Newton's Method</legend>
+                <div class="method-grid">
+                    <label for="newtonInitial">x0</label>
+                    <input id="newtonInitial" type="number" step="any" placeholder="1.5">
+                    <label for="newtonStopValue">Stop value</label>
+                    <input id="newtonStopValue" type="number" step="any" placeholder="0.0001" value="0.0001">
+                    <label for="newtonStopType">Stop by</label>
+                    <select id="newtonStopType">
+                        <option value="tol">Tolerance</option>
+                        <option value="iter">Iterations</option>
+                    </select>
+                </div>
+                <button id="runNewtonBtn" type="button">Run Newton</button>
+                <div class="result-row"><label>Root:</label> <input id="newtonRoot" type="text" title="Newton root" readonly></div>
+                <div class="result-row"><label>Steps:</label> <input id="newtonSteps" type="text" title="Newton steps" readonly></div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>i</th>
+                                <th>x_n</th>
+                                <th>f(x)</th>
+                                <th>f'(x)</th>
+                                <th>f(x)/f'(x)</th>
+                                <th>x(n+1)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="newtonTable"></tbody>
+                    </table>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Fixed-Point Iteration</legend>
+                <label for="fixedPointFunction">Enter g(x):</label><br>
+                <input id="fixedPointFunction" type="text" placeholder="e.g., (x + 2)^(1/3)">
+                <div class="method-grid">
+                    <label for="fixedPointInitial">x0</label>
+                    <input id="fixedPointInitial" type="number" step="any" placeholder="1.5">
+                    <label for="fixedPointStopValue">Stop value</label>
+                    <input id="fixedPointStopValue" type="number" step="any" placeholder="0.0001" value="0.0001">
+                    <label for="fixedPointStopType">Stop by</label>
+                    <select id="fixedPointStopType">
+                        <option value="tol">Tolerance</option>
+                        <option value="iter">Iterations</option>
+                    </select>
+                </div>
+                <button id="runFixedPointBtn" type="button">Run Fixed-Point</button>
+                <div class="result-row"><label>Root:</label> <input id="fixedPointRoot" type="text" title="Fixed-point root" readonly></div>
+                <div class="result-row"><label>Steps:</label> <input id="fixedPointSteps" type="text" title="Fixed-point steps" readonly></div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>i</th>
+                                <th>x(i)</th>
+                                <th>g(x(i))</th>
+                                <th>|x(i+1) - x(i)|</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fixedPointTable"></tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </section>
+        <section id="interpolationSection">
+            <h2>Interpolation (Lagrange / Newton / Neville)</h2>
+            <fieldset>
+                <legend>Mode & Input</legend>
+                <label for="interpolationMethod">Method:</label>
+                <select id="interpolationMethod">
+                    <option value="lagrange">Lagrange</option>
+                    <option value="newton">Newton (Divided Differences)</option>
+                    <option value="neville">Neville</option>
+                </select>
+
+                <div id="lagrangeFormBlock" style="margin-top:8px">
+                    <label for="lagrangeForm">Lagrange form:</label>
+                    <select id="lagrangeForm">
+                        <option value="standard">Standard form</option>
+                        <option value="second-normalized">Second normalized form (barycentric)</option>
+                    </select>
+                </div>
+
+                <div style="margin-top:8px">
+                    <label>Input mode:</label><br>
+                    <input id="modePoints" name="interpMode" type="radio" value="points" checked>
+                    <label for="modePoints">Points (x,y pairs)</label>
+                    <input id="modeFunction" name="interpMode" type="radio" value="function">
+                    <label for="modeFunction">Nodes + Function (specify x nodes and f(x))</label>
+                </div>
+
+                <div id="pointsInputBlock" style="margin-top:8px">
+                    <label for="lagrangePoints">Enter points as `x,y; x,y; ...`</label><br>
+                    <input id="lagrangePoints" type="text" placeholder="e.g., 1,1; 2,4; 3,9">
+                </div>
+
+                <div id="functionInputBlock" style="margin-top:8px">
+                    <label for="nodesInput">Enter nodes as `x0; x1; x2; ...`</label><br>
+                    <input id="nodesInput" type="text" placeholder="e.g., 1; 2; 3">
+                    <div class="input-row" style="margin-top:6px">
+                        <label for="functionInput">Enter f(x):</label>
+                        <input id="functionInput" type="text" placeholder="e.g., sin(x) or x^2 + 1">
+                    </div>
+                    <div class="input-row" style="margin-top:6px">
+                        <label for="sampleCount">Optional sample count (for plotting/comparison):</label>
+                        <input id="sampleCount" type="number" placeholder="100">
+                    </div>
+                </div>
+
+                <div class="input-row" style="margin-top:8px">
+                    <label for="interpXValue">Evaluate polynomial at x:</label>
+                    <input id="interpXValue" type="text" placeholder="optional (e.g., 2 or 2.5)">
+                </div>
+
+                <div style="margin-top:8px">
+                    <input id="plotComparison" type="checkbox">
+                    <label for="plotComparison">Plot comparison when function provided (optional)</label>
+                </div>
+
+                <button id="runInterpolationBtn" type="button" style="margin-top:8px">Build / Evaluate</button>
+            </fieldset>
+
+            <div class="result-section" style="margin-top:8px">
+                <div class="result-row"><label>Polynomial:</label> <input id="interpolationPolynomialResult" type="text" title="Interpolation polynomial" readonly></div>
+                <div class="result-row"><label>Interpolated Value:</label> <input id="interpolationValueResult" type="text" title="Interpolated value at x" readonly></div>
+                <div class="result-row"><label>Extra Info:</label> <input id="interpolationExtraInfo" type="text" title="Extra info (weights / divided differences)" readonly></div>
+            </div>
+        </section>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.1/math.js"></script>
+    <script src="utils/rootFindingMethods.js"></script>
+    <script src="utils/calculatorUtils.js"></script>
+    <script src="computationCalculator.js"></script>
+    <script src="errorEvaluationCalculator.js"></script>
+    <script src="binaryConversionCalculator.js"></script>
+    <script src="rootFindingCalculator.js"></script>
+    <script src="lagrangeInterpolationCalculator.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
