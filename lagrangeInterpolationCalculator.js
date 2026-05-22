@@ -116,7 +116,7 @@ function parsePoints(input) {
         const x = Number(values[0]);
         const y = Number(values[1]);
         if (!Number.isFinite(x) || !Number.isFinite(y)) throw new Error('Each point must contain valid numeric x and y values.');
-        return { x: math.bignumber(x), y: math.bignumber(y) };
+        return { x: math.fraction(values[0]), y: math.fraction(values[1]) };
     });
 
     const uniqueX = new Set(points.map((p) => p.x.toString()));
